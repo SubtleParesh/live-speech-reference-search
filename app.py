@@ -13,7 +13,7 @@ with gr.Blocks() as demo:
         with gr.Row(variant="panel", equal_height=True):
             with gr.Column(scale=1):
                 chatbot = gr.Chatbot(
-                    bubble_full_width=True, height="85%", show_copy_button=True
+                    bubble_full_width=True, height="65vh", show_copy_button=True
                 )
                 chat_input = gr.Textbox(
                     interactive=True, placeholder="Type Search Query...."
