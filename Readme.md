@@ -12,8 +12,8 @@ The objective was to develop a foundational solution that could later evolve to 
 
 ## Demo Video
 
-
 <video controls src="demos/Live-Microphone.mp4" title="Live Mode"></video>
+
 <video controls src="demos/Offline-Upload Mode.mp4" title="Offline Mode"></video>
 
 ## [Blog Post](https://medium.com/@subtleparesh/journey-into-automatic-speech-recognition-build-your-own-real-time-searchable-transcript-system-1929eb351593) 
