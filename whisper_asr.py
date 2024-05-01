@@ -1,5 +1,3 @@
-from traitlets import default
-from transformers import pipeline
 import numpy as np
 import time
 import whisperx
@@ -7,7 +5,6 @@ from scipy.signal import resample
 import time
 import os
 import time
-
 
 class WhisperAutomaticSpeechRecognizer:
     device = "cuda"
