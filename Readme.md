@@ -19,9 +19,6 @@ https://github.com/SubtleParesh/live-speech-reference-search/assets/20494680/fc7
 https://github.com/SubtleParesh/live-speech-reference-search/assets/20494680/8c50b654-ca3a-495a-86fd-7b88ef160073
 
 
-ontrols src="demos/Live-Microphone.mp4" title="Live Mode"></video>
-
-<video controls src="demos/Offline-Upload Mode.mp4" title="Offline Mode"></video>
 
 ## [Blog Post](https://medium.com/@subtleparesh/journey-into-automatic-speech-recognition-build-your-own-real-time-searchable-transcript-system-1929eb351593) 
 
