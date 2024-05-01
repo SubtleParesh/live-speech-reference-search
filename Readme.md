@@ -11,8 +11,10 @@ The objective was to develop a foundational solution that could later evolve to 
 - Exploring various scenarios to be accounted for in the solution design process.
 
 ## Demo Video
-![Live Mode](demos/Live-Microphone.mkv)
-![Offline Mode](<demos/Offline-Upload Mode.mkv>)
+
+![Live Mode](https://youtube.com/video/PfAgdzfwnKA)
+
+![Offline Mode](https://youtube.com/video/VZ0PL4OBAAk)
 
 
 ## [Blog Post](https://medium.com/@subtleparesh/journey-into-automatic-speech-recognition-build-your-own-real-time-searchable-transcript-system-1929eb351593) 
