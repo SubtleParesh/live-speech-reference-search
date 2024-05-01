@@ -1,35 +1,25 @@
+from traitlets import default
 from transformers import pipeline
 import numpy as np
 import time
 import whisperx
-import torch
 from scipy.signal import resample
 import time
 import os
-import datetime
-from operator import le
 import time
-import timeit
-from transformers import AutoModelForMaskedLM, AutoTokenizer
-from langchain_text_splitters import SpacyTextSplitter
-from sentence_transformers import SentenceTransformer
-from typing import Dict, List
-import torch
-from qdrant_client import http, models, QdrantClient
-from transformers import T5Tokenizer, T5ForConditionalGeneration
 
 
 class WhisperAutomaticSpeechRecognizer:
     device = "cuda"
-    compute_type = "int8"  # change to "int8" if low on GPU mem (may reduce accuracy)
+    compute_type = "int8"  # change to if more gpu memory available
     batch_size = 4
     model = whisperx.load_model(
         "medium", device, language="en", compute_type=compute_type
     )
     diarize_model = whisperx.DiarizationPipeline(
-        use_auth_token="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", device="cuda"
+        use_auth_token=os.environ.get('HF_TOKEN'), device="cuda"
     )
-    current_speaker = None
+    existing_speaker = None
 
     @staticmethod
     def downsample_audio_scipy(audio: np.ndarray, original_rate, target_rate=16000):
@@ -45,30 +35,6 @@ class WhisperAutomaticSpeechRecognizer:
         downsampled_audio = resample(audio, num_samples)
 
         return downsampled_audio
-
-    @staticmethod
-    def transcribe_file(filepath: str):
-        audio = whisperx.load_audio(filepath)
-        return WhisperAutomaticSpeechRecognizer.transcribe((16000, audio), None, "")
-
-    @staticmethod
-    def transcribe(stream, full_stream, full_transcript):
-        time.sleep(5)
-        sr, y = stream
-        y = WhisperAutomaticSpeechRecognizer.downsample_audio_scipy(y, sr)
-        y = y.astype(np.float32)
-        y /= 32768.0
-
-        if full_transcript is None:
-            full_transcript = ""
-        transcribe_result = WhisperAutomaticSpeechRecognizer.model.transcribe(
-            y, batch_size=WhisperAutomaticSpeechRecognizer.batch_size
-        )
-        new_transcript = ""
-        for segment in transcribe_result["segments"]:
-            new_transcript = new_transcript + segment["text"] + "\n"
-        full_transcript = full_transcript + new_transcript
-        return full_transcript, stream, full_transcript
 
     @staticmethod
     def transcribe_with_diarization_file(filepath: str):
@@ -102,19 +68,24 @@ class WhisperAutomaticSpeechRecognizer:
 
         new_transcript = ""
         for segment in diarize_result["segments"]:
-            print(segment)
-            if WhisperAutomaticSpeechRecognizer.current_speaker == None:
+            current_speaker = ""
+            default_first_speaker = "SPEAKER_00"
+            try:
+                current_speaker = segment["speaker"]
+            except KeyError:
+                current_speaker = default_first_speaker
+            if WhisperAutomaticSpeechRecognizer.existing_speaker == None:
                 try:
-                    WhisperAutomaticSpeechRecognizer.current_speaker = segment["speaker"]
+                    WhisperAutomaticSpeechRecognizer.existing_speaker = current_speaker
                 except KeyError:
-                    WhisperAutomaticSpeechRecognizer.current_speaker = "SPEAKER_00"
-                new_transcript += f"\n {WhisperAutomaticSpeechRecognizer.current_speaker}  - "
-            if segment["speaker"] != WhisperAutomaticSpeechRecognizer.current_speaker and segment["speaker"] is not "SPEAKER_00":
-                WhisperAutomaticSpeechRecognizer.current_speaker = segment["speaker"]
-                new_transcript += f"\n {WhisperAutomaticSpeechRecognizer.current_speaker}  - "
+                    WhisperAutomaticSpeechRecognizer.existing_speaker = default_first_speaker
+                new_transcript += f"\n {WhisperAutomaticSpeechRecognizer.existing_speaker}  - "
+            if current_speaker != WhisperAutomaticSpeechRecognizer.existing_speaker and current_speaker is not default_first_speaker:
+                WhisperAutomaticSpeechRecognizer.existing_speaker = current_speaker
+                new_transcript += f"\n {WhisperAutomaticSpeechRecognizer.existing_speaker}  - "
             new_transcript = new_transcript + segment["text"]
         full_transcript = full_transcript + new_transcript
         end_time = time.time()
         if streaming:
-            time.sleep(10 - (end_time - start_time))
+            time.sleep(5 - (end_time - start_time))
         return full_transcript, stream, full_transcript
