@@ -10,10 +10,14 @@ The objective was to develop a foundational solution that could later evolve to 
 - Ensuring the accuracy and efficiency of reference searches.
 - Exploring various scenarios to be accounted for in the solution design process.
 
+## Demo Video
 
-### Blog Post -
+## Blog Post -
 
 # Running the project
+
+### Update Hugging face token
+Update environment variable for hugging face token in `environment.yml`
 
 ### Creating & Activating Environment from conda
 `conda env create -f environment.yml`
