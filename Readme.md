@@ -12,7 +12,14 @@ The objective was to develop a foundational solution that could later evolve to 
 
 ## Demo Video
 
-<video controls src="demos/Live-Microphone.mp4" title="Live Mode"></video>
+
+
+https://github.com/SubtleParesh/live-speech-reference-search/assets/20494680/fc72e398-cd21-4001-a0c6-d42883d36331
+
+https://github.com/SubtleParesh/live-speech-reference-search/assets/20494680/8c50b654-ca3a-495a-86fd-7b88ef160073
+
+
+ontrols src="demos/Live-Microphone.mp4" title="Live Mode"></video>
 
 <video controls src="demos/Offline-Upload Mode.mp4" title="Offline Mode"></video>
 
